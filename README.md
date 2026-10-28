@@ -1,5 +1,7 @@
 Hola! I'm froQ. → *frog (maybe)*
 
+[froq.me](https://froq.me) · [cv](https://froq.me/cv) · [stack](https://froq.me/stack) · [爱发电](https://afdian.com/a/froq-sponsor-me)
+
 I'm doing a master's degree, which is not the point at all.
 
 I code, build, read, write, and plenty of other stuff.
@@ -8,10 +10,6 @@ Most of the time I have a thing for aesthetics—and how things feel to use.
 
 My dream job is to work on the intersection of design and development.
 If possible, I want to be a full-time open source contributor.
-
-[My CV](https://froq.me/cv) is here.
-
-Sponsor me on [爱发电](https://afdian.com/a/froq-sponsor-me).
 
 ### Stack
 
@@ -25,7 +23,10 @@ Sponsor me on [爱发电](https://afdian.com/a/froq-sponsor-me).
 
 **Curious** — iOS Development · *Game Design* · *Creative Coding*
 
-Longer notes on the [stack](https://froq.me/stack).
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/now-dark.svg">
+  <img alt="what froQ is doing now" src="assets/now-light.svg" width="640">
+</picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">

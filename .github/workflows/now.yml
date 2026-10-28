@@ -1,0 +1,36 @@
+# Refreshes assets/now-{light,dark}.svg from froq.me's public activity.json and commits to main.
+#   Action:  Actions tab > "now" > Run workflow (also runs every 20 minutes).
+#   Locally: node scripts/now.mjs
+# Only the SVGs change; README.md is hand-written Markdown and is never edited here.
+name: now
+
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: now
+  cancel-in-progress: false
+
+jobs:
+  now:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/now.mjs
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add assets/now-light.svg assets/now-dark.svg
+          git diff --cached --quiet && exit 0
+          git commit -m "now: update"
+          git pull --rebase origin main
+          git push origin HEAD:main
