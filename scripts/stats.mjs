@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 
 const USER = process.env.PROFILE_USER || '0froq'
 const TOKEN = process.env.STATS_TOKEN || process.env.GITHUB_TOKEN
@@ -8,8 +8,6 @@ const THEMES = {
   light: { ink: '#1d1d1a', accent: '#a83429', muted: '#5c5a54' },
   dark: { ink: '#ece7dc', accent: '#7ea3d9', muted: '#9c968c' },
 }
-
-const SERIF = `Georgia, 'Iowan Old Style', Palatino, 'Palatino Linotype', 'Times New Roman', serif`
 
 async function gql(query, variables) {
   const res = await fetch('https://api.github.com/graphql', {
@@ -34,28 +32,72 @@ async function fetchTotal() {
   return data.user.contributionsCollection.contributionCalendar.totalContributions
 }
 
-function render(total, t) {
-  const label = `${total.toLocaleString('en-US')} contributions in the past year`
-  const W = 640
-  const H = 28
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">
-  <title>${label}</title>
-  <text x="0" y="18" font-family="${SERIF}" font-size="13" fill="${t.muted}">
-    <tspan fill="${t.accent}">${total.toLocaleString('en-US')}</tspan><tspan> contributions in the past year</tspan>
-  </text>
-</svg>
-`
+function glyphId(prefix, size, ch) {
+  return `${prefix}_${size}_${ch.codePointAt(0).toString(16)}`
+}
+
+function layoutUses(chars, startX, y) {
+  let x = startX
+  const uses = []
+  for (const rec of chars) {
+    if (rec.id) {
+      uses.push(
+        `    <use href="#${rec.id}" xlink:href="#${rec.id}" x="${Number(x.toFixed(1))}" y="${y}"/>`,
+      )
+    }
+    x += rec.adv
+  }
+  return uses.join('\n')
+}
+
+function patchStack(svg, total, theme) {
+  const found = svg.match(/<!--contrib-metrics ({.*})-->/)
+  if (!found) throw new Error('stack SVG is missing contrib-metrics')
+  const metrics = JSON.parse(found[1])
+  const num = total.toLocaleString('en-US')
+  const numChars = [...num].map((ch) => {
+    const adv = metrics.adv[ch]
+    if (adv == null) throw new Error(`no advance for ${JSON.stringify(ch)}`)
+    return { id: glyphId(metrics.prefix, metrics.size, ch), adv }
+  })
+  let x = metrics.x
+  const numUses = layoutUses(numChars, x, metrics.y)
+  x += numChars.reduce((sum, rec) => sum + rec.adv, 0)
+  const restUses = layoutUses(metrics.rest, x, metrics.y)
+  const label = `${num} contributions in the past year`
+  const next = svg
+    .replace(
+      /<g id="contrib-num"[^>]*>[\s\S]*?<\/g>/,
+      `<g id="contrib-num" fill="${theme.accent}" fill-rule="nonzero">\n${numUses}\n  </g>`,
+    )
+    .replace(
+      /<g id="contrib-rest"[^>]*>[\s\S]*?<\/g>/,
+      `<g id="contrib-rest" fill="${theme.muted}" fill-rule="nonzero">\n${restUses}\n  </g>`,
+    )
+    .replace(/\d{1,3}(?:,\d{3})* contributions in the past year/g, label)
+  if (!next.includes('id="contrib-num"') || !next.includes('id="contrib-rest"')) {
+    throw new Error('failed to patch contrib groups in stack SVG')
+  }
+  return next
 }
 
 const total = await fetchTotal()
 const label = `${total.toLocaleString('en-US')} contributions in the past year`
-mkdirSync('assets', { recursive: true })
-for (const [name, theme] of Object.entries(THEMES)) writeFileSync(`assets/stats-${name}.svg`, render(total, theme))
+
+for (const [name, theme] of Object.entries(THEMES)) {
+  const path = `assets/stack-${name}.svg`
+  writeFileSync(path, patchStack(readFileSync(path, 'utf8'), total, theme))
+}
 
 const readmePath = 'README.md'
 const readme = readFileSync(readmePath, 'utf8')
-const ALT = /(<img alt=")[^"]*(" src="assets\/stats-light\.svg")/
-const next = readme.replace(ALT, `$1${label}$2`)
-if (!ALT.test(readme)) throw new Error('README.md is missing the stats image alt this script updates')
-writeFileSync(readmePath, next)
+if (!/src="assets\/stack-light\.svg"/.test(readme)) {
+  throw new Error('README.md is missing the stack image this script updates')
+}
+const CONTRIB = /\d{1,3}(?:,\d{3})* contributions in the past year/g
+if (!CONTRIB.test(readme)) {
+  throw new Error('README.md is missing the contributions phrase this script updates')
+}
+CONTRIB.lastIndex = 0
+writeFileSync(readmePath, readme.replace(CONTRIB, label))
 console.log(`${USER}: ${label}`)
