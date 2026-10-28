@@ -1,5 +1,8 @@
-import { mkdirSync, writeFileSync } from 'node:fs'
-import { spawnSync } from 'node:child_process'
+// Regenerates assets/stack-{light,dark}.svg and README.md (pure Node, no browser).
+//   Locally:  node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
+//   Action:   .github/workflows/stats.yml (workflow_dispatch, schedule, or push to scripts/)
+// The stats image alt (live contribution count) is preserved from the current README.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 
 const W = 640
 const SERIF = `Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif`
@@ -88,30 +91,22 @@ function mix(a, b, t) {
   return `#${out.map((n) => n.toString(16).padStart(2, '0')).join('')}`
 }
 
-function measure(items) {
-  const html = `<!doctype html><meta charset="utf-8"><svg xmlns="http://www.w3.org/2000/svg"><text id="t"></text></svg><pre id="out"></pre><script>
-const items = ${JSON.stringify(items)};
-const t = document.getElementById('t');
-const result = {};
-for (const item of items) {
-  t.setAttribute('font-family', item.mono ? ${JSON.stringify(MONO)} : ${JSON.stringify(SERIF)});
-  t.setAttribute('font-size', String(item.size));
-  t.setAttribute('font-style', item.italic ? 'italic' : 'normal');
-  t.textContent = item.text;
-  result[item.id] = t.getComputedTextLength();
-}
-document.getElementById('out').textContent = JSON.stringify(result);
-</script>`
-  writeFileSync('/tmp/profile-measure.html', html)
-  const chrome = spawnSync(
-    'google-chrome',
-    ['--headless', '--disable-gpu', '--no-sandbox', '--user-data-dir=/tmp/chrome-measure', '--virtual-time-budget=3000', '--dump-dom', '/tmp/profile-measure.html'],
-    { encoding: 'utf8', timeout: 30000 },
-  )
-  if (chrome.status !== 0) throw new Error(chrome.stderr || 'chrome measure failed')
-  const m = chrome.stdout.match(/<pre id="out">([\s\S]*?)<\/pre>/)
-  if (!m) throw new Error('measure output missing')
-  return JSON.parse(m[1])
+// Times-like advance widths in em. GitHub renders Georgia, which is wider,
+// so wrapTools applies a 1.14 safety factor on top of this estimate.
+const NARROW = new Set("iljtfIJ.,;:'|!()/ ")
+const WIDE = new Set('mwMW')
+
+function textWidth(text, size) {
+  let em = 0
+  for (const ch of text) {
+    if (ch === ' ') em += 0.25
+    else if (NARROW.has(ch)) em += 0.3
+    else if (WIDE.has(ch)) em += 0.8
+    else if (/[A-Z0-9×]/.test(ch)) em += 0.68
+    else if (/[^\x00-\x7f]/.test(ch)) em += 1
+    else em += 0.46
+  }
+  return em * size
 }
 
 function svg(w, h, body) {
@@ -200,11 +195,10 @@ function stack(theme, widths) {
   return { svg: svg(W, h, parts.join('\n')), h }
 }
 
-const items = [{ id: 'Stack', text: 'Stack', size: 15 }]
+const widths = { Stack: textWidth('Stack', 15) }
 for (const group of groups) {
-  for (const [name] of group.tools) items.push({ id: name, text: name, size: 15 })
+  for (const [name] of group.tools) widths[name] = textWidth(name, 15)
 }
-const widths = measure(items)
 
 mkdirSync('assets', { recursive: true })
 for (const [name, theme] of Object.entries(THEMES)) {
@@ -217,6 +211,11 @@ function picture(base, alt) {
   <img alt="${esc(alt)}" src="assets/${base}-light.svg" width="${W}">
 </picture>`
 }
+
+const STATS_ALT = /<img alt="([^"]*)" src="assets\/stats-light\.svg"/
+const statsAlt =
+  (existsSync('README.md') && readFileSync('README.md', 'utf8').match(STATS_ALT)?.[1]) ||
+  'contributions in the past year'
 
 const stackAlt = groups.map((g) => `${g.level}: ${g.tools.map(([n]) => n).join(', ')}`).join('. ')
 
@@ -239,7 +238,7 @@ ${picture('stack', `Stack. ${stackAlt}`)}
 
 Longer notes on the [stack](https://froq.me/stack).
 
-${picture('stats', 'contributions in the past year')}
+${picture('stats', statsAlt)}
 `
 
 writeFileSync('README.md', readme)

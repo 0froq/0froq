@@ -1,26 +1,36 @@
-name: stats
+# Regenerates the profile SVGs (stack + contribution count) and commits them to main.
+#   Action:  Actions tab > "profile" > Run workflow (also runs every 6 hours and on pushes to scripts/).
+#   Locally: node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
+# Order matters: profile.mjs rewrites README.md, stats.mjs runs last and writes the live count.
+# Optional STATS_TOKEN secret (PAT, read:user) also counts private contributions.
+name: profile
 
 on:
   schedule:
     - cron: '17 */6 * * *'
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['scripts/**', '.github/workflows/stats.yml']
 
 permissions:
   contents: write
 
+concurrency:
+  group: profile
+  cancel-in-progress: false
+
 jobs:
-  stats:
+  profile:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+      - run: node scripts/profile.mjs
       - run: node scripts/stats.mjs
         env:
-          # Refreshes the past-year contribution total only.
-          # Optional PAT (read:user) in the STATS_TOKEN secret also counts private contributions
-          # if "Include private contributions on my profile" is enabled. Falls back to GITHUB_TOKEN.
           STATS_TOKEN: ${{ secrets.STATS_TOKEN }}
           GITHUB_TOKEN: ${{ github.token }}
       - name: Commit
@@ -28,4 +38,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add assets README.md
-          git diff --cached --quiet || (git commit -m "stats: update" && git push)
+          git diff --cached --quiet && exit 0
+          git commit -m "profile: regenerate"
+          git pull --rebase origin main
+          git push origin HEAD:main
