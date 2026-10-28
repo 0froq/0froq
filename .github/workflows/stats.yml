@@ -1,7 +1,7 @@
-# Refreshes the contribution count in the Stack SVGs and the stack image alt, then commits to main.
+# Refreshes GitHub metrics in the Stack SVGs and the stack image alt, then commits to main.
 #   Action:  Actions tab > "stats" > Run workflow (also runs every 6 hours).
 #   Locally: GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
-# README.md is hand-written Markdown; stats.mjs only edits the Stack contrib glyphs and <img alt>.
+# README.md is hand-written Markdown; stats.mjs only edits Stack metric glyphs and <img alt>.
 # Optional STATS_TOKEN secret (PAT, read:user) also counts private contributions.
 name: stats
 
