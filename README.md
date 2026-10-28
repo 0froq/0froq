@@ -10,28 +10,10 @@
   <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor." src="assets/bio-light.svg" width="640">
 </picture>
 
-### Stack
-
-<p>
-<code>Fluent</code><br>
-Markdown · Keyboard Layouts · <em>3×3 Cube Speed-solving</em>
-</p>
-<p>
-<code>Daily</code><br>
-Vue.js · TypeScript · CSS/UnoCSS · Git · Neovim · AI Agents · <em>Scraps</em> · <em>Deep Work</em>
-</p>
-<p>
-<code>Used</code><br>
-Python · Personal Knowledge Management · <em>Writing</em> · <em>Minecraft</em> · <em>Pour Over</em>
-</p>
-<p>
-<code>Learning</code><br>
-Nuxt · <em>Visual Design</em> · <em>Espresso</em> · <em>Podcasting</em>
-</p>
-<p>
-<code>Curious</code><br>
-iOS Development · <em>Game Design</em> · <em>Creative Coding</em>
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
+  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding" src="assets/stack-light.svg" width="640">
+</picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.froq.me/now-dark.svg">
