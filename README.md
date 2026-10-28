@@ -24,8 +24,8 @@ If possible, I want to be a full-time open source contributor.
 **Curious** — iOS Development · *Game Design* · *Creative Coding*
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="assets/now-dark.svg">
-  <img alt="what froQ is doing now" src="assets/now-light.svg" width="640">
+  <source media="(prefers-color-scheme: dark)" srcset="https://api.froq.me/now-dark.svg">
+  <img alt="what froQ is doing now" src="https://api.froq.me/now-light.svg" width="640">
 </picture>
 
 <picture>
