@@ -5,8 +5,8 @@ const TOKEN = process.env.STATS_TOKEN || process.env.GITHUB_TOKEN
 if (!TOKEN) throw new Error('Set GITHUB_TOKEN (or STATS_TOKEN) to query the GitHub GraphQL API')
 
 const THEMES = {
-  light: { paper: '#fff8e8', ink: '#1d1d1a', accent: '#a83429' },
-  dark: { paper: '#1e1d19', ink: '#ece7dc', accent: '#7ea3d9' },
+  light: { ink: '#1d1d1a', accent: '#a83429', muted: '#5c5a54' },
+  dark: { ink: '#ece7dc', accent: '#7ea3d9', muted: '#9c968c' },
 }
 
 const SERIF = `Georgia, 'Iowan Old Style', Palatino, 'Palatino Linotype', 'Times New Roman', serif`
@@ -36,15 +36,13 @@ async function fetchTotal() {
 
 function render(total, t) {
   const label = `${total.toLocaleString('en-US')} contributions in the past year`
-  const W = 640
-  const H = 124
+  const W = 360
+  const H = 32
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">
   <title>${label}</title>
-  <rect width="${W}" height="${H}" fill="${t.paper}"/>
-  <rect x="0.5" y="0.5" width="${W - 1}" height="${H - 1}" fill="none" stroke="${t.ink}" stroke-opacity="0.28"/>
-  <line x1="304" y1="28" x2="336" y2="28" stroke="${t.accent}" stroke-width="1"/>
-  <text x="320" y="74" text-anchor="middle" font-family="${SERIF}" font-size="40" fill="${t.accent}">${total.toLocaleString('en-US')}</text>
-  <text x="320" y="98" text-anchor="middle" font-family="${SERIF}" font-style="italic" font-size="15" fill="${t.ink}" fill-opacity="0.62">contributions in the past year</text>
+  <text x="0" y="22" font-family="${SERIF}" font-size="16" fill="${t.muted}">
+    <tspan fill="${t.accent}">${total.toLocaleString('en-US')}</tspan><tspan> contributions in the past year</tspan>
+  </text>
 </svg>
 `
 }

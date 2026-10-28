@@ -1,8 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="124" viewBox="0 0 640 124" role="img" aria-label="1,657 contributions in the past year">
-  <title>1,657 contributions in the past year</title>
-  <rect width="640" height="124" fill="#1e1d19"/>
-  <rect x="0.5" y="0.5" width="639" height="123" fill="none" stroke="#ece7dc" stroke-opacity="0.28"/>
-  <line x1="304" y1="28" x2="336" y2="28" stroke="#7ea3d9" stroke-width="1"/>
-  <text x="320" y="74" text-anchor="middle" font-family="Georgia, 'Iowan Old Style', Palatino, 'Palatino Linotype', 'Times New Roman', serif" font-size="40" fill="#7ea3d9">1,657</text>
-  <text x="320" y="98" text-anchor="middle" font-family="Georgia, 'Iowan Old Style', Palatino, 'Palatino Linotype', 'Times New Roman', serif" font-style="italic" font-size="15" fill="#ece7dc" fill-opacity="0.62">contributions in the past year</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="32" viewBox="0 0 360 32" role="img" aria-label="1,659 contributions in the past year">
+  <title>1,659 contributions in the past year</title>
+  <text x="0" y="22" font-family="Georgia, 'Iowan Old Style', Palatino, 'Palatino Linotype', 'Times New Roman', serif" font-size="16" fill="#9c968c">
+    <tspan fill="#7ea3d9">1,659</tspan><tspan> contributions in the past year</tspan>
+  </text>
 </svg>
