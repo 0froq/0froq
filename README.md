@@ -37,6 +37,6 @@
 <div>
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="1,663 contributions in the past year" src="assets/stats-light.svg" width="640">
+  <img alt="1,664 contributions in the past year" src="assets/stats-light.svg" width="640">
 </picture>
 </div>
