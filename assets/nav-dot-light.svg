@@ -1,9 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="17" height="24" viewBox="0 0 17 24" overflow="hidden" role="img" aria-label="·">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="11" height="26" viewBox="0 0 11 26" overflow="hidden" role="img" aria-label="·">
   <title>·</title>
   <defs>
-    <path id="feb_12_b7" d="M1.2 -1.8L1.2 -1.8Q0.94 -1.8 0.74 -2Q0.54 -2.2 0.54 -2.46L0.54 -2.46Q0.54 -2.74 0.74 -2.93Q0.94 -3.12 1.2 -3.12L1.2 -3.12Q1.48 -3.12 1.67 -2.93Q1.86 -2.74 1.86 -2.46L1.86 -2.46Q1.86 -2.2 1.67 -2Q1.48 -1.8 1.2 -1.8"/>
+    <path id="feb_17_b7" d="M1.7 -2.55L1.7 -2.55Q1.33 -2.55 1.05 -2.83Q0.77 -3.11 0.77 -3.49L0.77 -3.49Q0.77 -3.88 1.05 -4.15Q1.33 -4.42 1.7 -4.42L1.7 -4.42Q2.09 -4.42 2.36 -4.15Q2.64 -3.88 2.64 -3.49L2.64 -3.49Q2.64 -3.11 2.36 -2.83Q2.09 -2.55 1.7 -2.55"/>
   </defs>
   <g fill="#5c5a54" fill-rule="nonzero">
-    <use href="#feb_12_b7" xlink:href="#feb_12_b7" x="7.2" y="16"/>
+    <use href="#feb_17_b7" xlink:href="#feb_17_b7" x="3.4" y="18"/>
   </g>
 </svg>

@@ -14,7 +14,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
-  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding. 1,672 contributions in the past year. 42 stars across public repos. 55 public repositories. 1 cube, still in rotation. deep work · mornings, mostly" src="assets/stack-light.svg" width="660">
+  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding. 1,672 contributions in the past year. 42 stars across public repos. 55 public repositories" src="assets/stack-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
@@ -26,25 +26,25 @@
 <p align="center">
 <a href="https://froq.me"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-me-dark.svg">
-  <img alt="me" src="assets/nav-me-light.svg" width="16">
+  <img alt="me" src="assets/nav-me-light.svg" width="21">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="17">
+  <img alt="·" src="assets/nav-dot-light.svg" width="11">
 </picture><a href="https://froq.me/cv"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-cv-dark.svg">
-  <img alt="CV" src="assets/nav-cv-light.svg" width="16">
+  <img alt="CV" src="assets/nav-cv-light.svg" width="25">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="17">
+  <img alt="·" src="assets/nav-dot-light.svg" width="11">
 </picture><a href="https://froq.me/stack"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-stack-dark.svg">
-  <img alt="stack" src="assets/nav-stack-light.svg" width="37">
+  <img alt="stack" src="assets/nav-stack-light.svg" width="34">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="17">
+  <img alt="·" src="assets/nav-dot-light.svg" width="11">
 </picture><a href="https://afdian.com/a/froq-sponsor-me"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-afdian-dark.svg">
-  <img alt="爱发电" src="assets/nav-afdian-light.svg" width="40">
+  <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52">
 </picture></a>
 </p>
 </div>
