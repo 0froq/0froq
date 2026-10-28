@@ -2,14 +2,10 @@ Hola! I'm froQ. → *frog (maybe)*
 
 [froq.me](https://froq.me) · [cv](https://froq.me/cv) · [stack](https://froq.me/stack) · [爱发电](https://afdian.com/a/froq-sponsor-me)
 
-I'm doing a master's degree, which is not the point at all.
-
-I code, build, read, write, and plenty of other stuff.
-
-Most of the time I have a thing for aesthetics—and how things feel to use.
-
-My dream job is to work on the intersection of design and development.
-If possible, I want to be a full-time open source contributor.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/bio-dark.svg">
+  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor." src="assets/bio-light.svg" width="640">
+</picture>
 
 ### Stack
 
