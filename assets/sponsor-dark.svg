@@ -1,43 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="198" height="52" viewBox="0 0 198 52" role="img">
-  <style>
-    .ch, .note, .mark, .icon { animation: stream-in 0.16s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--d); }
-    .caret { opacity: 0; }
-    @keyframes stream-in { from { opacity: 0; } to { opacity: 1; } }
-    @media (prefers-reduced-motion: no-preference) {
-      .caret { opacity: 1; animation: caret-move 8.468s linear both; }
-    }
-    @keyframes caret-move {
-      93.81% { transform: translate(11.1px, 38.0px); opacity: 1; }
-      94.02% { transform: translate(21.1px, 38.0px); opacity: 1; }
-      94.24% { transform: translate(31.1px, 38.0px); opacity: 1; }
-      94.45% { transform: translate(41.1px, 38.0px); opacity: 1; }
-      94.66% { transform: translate(48.9px, 38.0px); opacity: 1; }
-      94.87% { transform: translate(58.9px, 38.0px); opacity: 1; }
-      95.09% { transform: translate(65.6px, 38.0px); opacity: 1; }
-      95.30% { transform: translate(65.6px, 38.0px); opacity: 1; }
-      95.51% { transform: translate(86.1px, 38.0px); opacity: 1; }
-      95.73% { transform: translate(95.0px, 38.0px); opacity: 1; }
-      95.94% { transform: translate(95.0px, 38.0px); opacity: 1; }
-      96.15% { transform: translate(110.0px, 38.0px); opacity: 1; }
-      96.36% { transform: translate(120.0px, 38.0px); opacity: 1; }
-      96.58% { transform: translate(120.0px, 38.0px); opacity: 1; }
-      96.79% { transform: translate(145.0px, 38.0px); opacity: 1; }
-      97.00% { transform: translate(165.0px, 38.0px); opacity: 1; }
-      97.21% { transform: translate(185.0px, 38.0px); opacity: 1; }
-      97.43% { transform: translate(190.0px, 38.0px); opacity: 1; }
-      100% { transform: translate(190.0px, 38.0px); opacity: 0; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .ch, .note, .mark, .icon { animation: none; opacity: 1; }
-      .caret { animation: none; opacity: 0; }
-    }
-  </style>
-  <text xml:space="preserve" x="0" y="36" font-family="Georgia, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif" font-size="20" ><tspan class="ch" fill="#ece7dc" style="--d:7.944s">S</tspan><tspan class="ch" fill="#ece7dc" style="--d:7.962s">p</tspan><tspan class="ch" fill="#ece7dc" style="--d:7.980s">o</tspan><tspan class="ch" fill="#ece7dc" style="--d:7.998s">n</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.016s">s</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.034s">o</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.052s">r</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.070s"> </tspan><tspan class="ch" fill="#ece7dc" style="--d:8.088s">m</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.106s">e</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.124s"> </tspan><tspan class="ch" fill="#ece7dc" style="--d:8.142s">o</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.160s">n</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.178s"> </tspan><tspan class="ch" fill="#ece7dc" style="--d:8.196s">爱</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.214s">发</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.232s">电</tspan><tspan class="ch" fill="#ece7dc" style="--d:8.250s">.</tspan></text>
-  <g class="mark" style="--d:8.196s" opacity="0.72">
-      <g transform="translate(120.00 38.00)">
-        <path d="M1.07 4.36 C3.09 4.29, 9.09 3.98, 13.19 3.95 C17.30 3.92, 21.44 4.27, 25.68 4.18 C29.91 4.09, 34.25 3.40, 38.61 3.39 C42.96 3.38, 47.67 4.11, 51.82 4.12 C55.97 4.12, 61.54 3.54, 63.49 3.42" fill="none" stroke="#7ea3d9" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round"/>
-      </g>
-    </g>
-  <rect class="caret" x="0" y="0" width="8" height="2.2" rx="0.4" fill="#7ea3d9" opacity="0"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="28" viewBox="0 0 640 28" overflow="visible">
+<text xml:space="preserve" x="0" y="18" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif" font-size="16" fill="#ece7dc"><tspan>Sponsor me on </tspan><tspan style="text-decoration: underline dashed #7ea3d9; text-underline-offset: 3px; text-decoration-thickness: 1px;">爱发电</tspan><tspan>.</tspan></text>
 </svg>

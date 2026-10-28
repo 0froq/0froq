@@ -36,11 +36,11 @@ async function fetchTotal() {
 
 function render(total, t) {
   const label = `${total.toLocaleString('en-US')} contributions in the past year`
-  const W = 360
-  const H = 32
+  const W = 640
+  const H = 28
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="${label}">
   <title>${label}</title>
-  <text x="0" y="22" font-family="${SERIF}" font-size="16" fill="${t.muted}">
+  <text x="0" y="18" font-family="${SERIF}" font-size="13" fill="${t.muted}">
     <tspan fill="${t.accent}">${total.toLocaleString('en-US')}</tspan><tspan> contributions in the past year</tspan>
   </text>
 </svg>
