@@ -1,8 +1,10 @@
-// Regenerates assets/stack-{light,dark}.svg and README.md (pure Node, no browser).
-//   Locally:  node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
+// Regenerates assets/{bio,cv,sponsor,notes,stack}-{light,dark}.svg and README.md.
+// Text is measured with Gelasio (metric-compatible with Georgia) via opentype.js: `npm ci` first.
+//   Locally:  npm ci && node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
 //   Action:   .github/workflows/stats.yml (workflow_dispatch, schedule, or push to scripts/)
 // The stats image alt (live contribution count) is preserved from the current README.
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { textWidth } from './measure.mjs'
 
 const W = 640
 const SERIF = `Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif`
@@ -91,24 +93,6 @@ function mix(a, b, t) {
   return `#${out.map((n) => n.toString(16).padStart(2, '0')).join('')}`
 }
 
-// Times-like advance widths in em. GitHub renders Georgia, which is wider,
-// so wrapTools applies a 1.14 safety factor on top of this estimate.
-const NARROW = new Set("iljtfIJ.,;:'|!()/ ")
-const WIDE = new Set('mwMW')
-
-function textWidth(text, size) {
-  let em = 0
-  for (const ch of text) {
-    if (ch === ' ') em += 0.25
-    else if (NARROW.has(ch)) em += 0.3
-    else if (WIDE.has(ch)) em += 0.8
-    else if (/[A-Z0-9×]/.test(ch)) em += 0.68
-    else if (/[^\x00-\x7f]/.test(ch)) em += 1
-    else em += 0.46
-  }
-  return em * size
-}
-
 function svg(w, h, body) {
   return `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" overflow="visible">
@@ -117,24 +101,51 @@ ${body}
 `
 }
 
-function wrapTools(tools, widths) {
-  const max = 500
-  const lines = []
-  let line = []
-  let used = 0
-  for (const [name, joke] of tools) {
-    const w = widths[name] * 1.14
-    const gap = line.length ? 22 : 0
-    if (line.length && used + gap + w > max) {
-      lines.push(line)
-      line = [[name, joke]]
-      used = w
-    } else {
-      line.push([name, joke])
-      used += gap + w
+const NAME_X = 112
+const NAME_SIZE = 15
+const SEP_W = textWidth(' · ', NAME_SIZE)
+const ROW_MAX = W - NAME_X - 8
+
+function rowWidth(names) {
+  return names.reduce((sum, n, i) => sum + textWidth(n, NAME_SIZE) + (i ? SEP_W : 0), 0)
+}
+
+// Fewest rows that fit, then split the names so the rows come out even.
+function wrapTools(tools) {
+  const n = tools.length
+  const names = tools.map(([name]) => name)
+  const fits = (i, j) => rowWidth(names.slice(i, j)) <= ROW_MAX
+  let rows = 1
+  while (rows < n) {
+    let i = 0
+    let count = 0
+    while (i < n) {
+      let j = i + 1
+      while (j < n && fits(i, j + 1)) j++
+      i = j
+      count++
+    }
+    if (count <= rows) break
+    rows++
+  }
+  const best = Array.from({ length: rows + 1 }, () => new Array(n + 1).fill(null))
+  best[0][0] = { cost: 0, prev: -1 }
+  for (let r = 1; r <= rows; r++) {
+    for (let j = 1; j <= n; j++) {
+      for (let i = r - 1; i < j; i++) {
+        if (!best[r - 1][i] || !fits(i, j)) continue
+        const cost = Math.max(best[r - 1][i].cost, rowWidth(names.slice(i, j)))
+        if (!best[r][j] || cost < best[r][j].cost) best[r][j] = { cost, prev: i }
+      }
     }
   }
-  if (line.length) lines.push(line)
+  const lines = []
+  let j = n
+  for (let r = rows; r >= 1; r--) {
+    const i = best[r][j].prev
+    lines.unshift(tools.slice(i, j))
+    j = i
+  }
   return lines
 }
 
@@ -147,9 +158,9 @@ function namesLine(theme, line) {
     .join('')
 }
 
-function stack(theme, widths) {
+function stack(theme) {
   const titleSize = 15
-  const titleW = widths.Stack
+  const titleW = textWidth('Stack', 15)
   const titleX = 22
   const yTitle = 16
   const ruleY = 11
@@ -178,7 +189,7 @@ function stack(theme, widths) {
   let y = 46
   groups.forEach((group, i) => {
     const color = mix(theme.accent, theme.ink, i / (groups.length - 1))
-    const lines = wrapTools(group.tools, widths)
+    const lines = wrapTools(group.tools)
     lines.forEach((line, li) => {
       if (li === 0) {
         parts.push(
@@ -186,7 +197,7 @@ function stack(theme, widths) {
         )
       }
       parts.push(
-        `<text xml:space="preserve" x="112" y="${y}" font-family="${SERIF}" font-size="15" fill="${theme.ink}">${namesLine(theme, line)}</text>`,
+        `<text xml:space="preserve" x="${NAME_X}" y="${y}" font-family="${SERIF}" font-size="${NAME_SIZE}" fill="${theme.ink}">${namesLine(theme, line)}</text>`,
       )
       y += li === lines.length - 1 ? 28 : 22
     })
@@ -195,14 +206,58 @@ function stack(theme, widths) {
   return { svg: svg(W, h, parts.join('\n')), h }
 }
 
-const widths = { Stack: textWidth('Stack', 15) }
-for (const group of groups) {
-  for (const [name] of group.tools) widths[name] = textWidth(name, 15)
+const BODY = 16
+// Underlines are text-decoration on the word itself so they follow the real font.
+function deco(theme, word, style) {
+  return `<tspan style="text-decoration: underline ${style} ${theme.accent}; text-underline-offset: 3px; text-decoration-thickness: 1px;">${esc(word)}</tspan>`
 }
+
+function bioLine(theme, y, inner) {
+  return `<text xml:space="preserve" x="0" y="${y}" font-family="${SERIF}" font-size="${BODY}" fill="${theme.ink}">${inner}</text>`
+}
+
+function bio(theme) {
+  const blocks = [
+    [
+      `Hola! I'm ${deco(theme, 'froQ', 'solid')}. <tspan fill="${theme.muted}" font-style="italic" font-size="13">→ frog (maybe)</tspan>`,
+    ],
+    ["I'm doing a master's degree, which is not the point at all."],
+    ['I code, build, read, write, and plenty of other stuff.'],
+    ['Most of the time I have a thing for aesthetics—and how things feel to use.'],
+    [
+      'My dream job is to work on the intersection of design and development.',
+      'If possible, I want to be a full-time open source contributor.',
+    ],
+  ]
+  const parts = []
+  let y = 18
+  blocks.forEach((lines, bi) => {
+    lines.forEach((line, li) => {
+      const plain = line.replace(/<[^>]+>/g, '')
+      if (textWidth(plain, BODY) > W) throw new Error(`bio line too wide: ${plain}`)
+      parts.push(bioLine(theme, y, bi === 0 ? line : esc(line)))
+      y += li === lines.length - 1 ? 34 : 24
+    })
+  })
+  return svg(W, y - 34 + 12, parts.join('\n'))
+}
+
+function linkRow(theme, prefix, word, suffix, h = 28) {
+  const inner = `${esc(prefix)}${deco(theme, word, 'dashed')}${esc(suffix)}`
+  return svg(W, h, bioLine(theme, 18, inner))
+}
+
+const cv = (theme) => linkRow(theme, '', 'My CV', ' is here.')
+const sponsor = (theme) => linkRow(theme, 'Sponsor me on ', '爱发电', '.', 44)
+const notes = (theme) => linkRow(theme, 'Longer notes on the ', 'stack', '.')
 
 mkdirSync('assets', { recursive: true })
 for (const [name, theme] of Object.entries(THEMES)) {
-  writeFileSync(`assets/stack-${name}.svg`, stack(theme, widths).svg)
+  writeFileSync(`assets/bio-${name}.svg`, bio(theme))
+  writeFileSync(`assets/cv-${name}.svg`, cv(theme))
+  writeFileSync(`assets/sponsor-${name}.svg`, sponsor(theme))
+  writeFileSync(`assets/notes-${name}.svg`, notes(theme))
+  writeFileSync(`assets/stack-${name}.svg`, stack(theme).svg)
 }
 
 function picture(base, alt) {
@@ -219,27 +274,26 @@ const statsAlt =
 
 const stackAlt = groups.map((g) => `${g.level}: ${g.tools.map(([n]) => n).join(', ')}`).join('. ')
 
-const readme = `Hola! I'm froQ. → *frog (maybe)*
+const bioAlt = [
+  "Hola! I'm froQ. frog (maybe).",
+  "I'm doing a master's degree, which is not the point at all.",
+  'I code, build, read, write, and plenty of other stuff.',
+  'Most of the time I have a thing for aesthetics—and how things feel to use.',
+  'My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor.',
+].join(' ')
 
-I'm doing a master's degree, which is not the point at all.
+const block = (inner) => `<div>\n${inner}\n</div>`
+const link = (href, inner) => `<a href="${href}">\n${inner}\n</a>`
 
-I code, build, read, write, and plenty of other stuff.
-
-Most of the time I have a thing for aesthetics—and how things feel to use.
-
-My dream job is to work on the intersection of design and development.
-If possible, I want to be a full-time open source contributor.
-
-[My CV](https://froq.me/cv) is here.
-
-Sponsor me on [爱发电](https://afdian.com/a/froq-sponsor-me).
-
-${picture('stack', `Stack. ${stackAlt}`)}
-
-Longer notes on the [stack](https://froq.me/stack).
-
-${picture('stats', statsAlt)}
-`
+const readme =
+  [
+    block(picture('bio', bioAlt)),
+    block(link('https://froq.me/cv', picture('cv', 'My CV is here.'))),
+    block(link('https://afdian.com/a/froq-sponsor-me', picture('sponsor', 'Sponsor me on 爱发电.'))),
+    block(picture('stack', `Stack. ${stackAlt}`)),
+    block(link('https://froq.me/stack', picture('notes', 'Longer notes on the stack.'))),
+    block(picture('stats', statsAlt)),
+  ].join('\n') + '\n'
 
 writeFileSync('README.md', readme)
 console.log('stack rows', groups.length)

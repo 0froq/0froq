@@ -54,10 +54,8 @@ for (const [name, theme] of Object.entries(THEMES)) writeFileSync(`assets/stats-
 
 const readmePath = 'README.md'
 const readme = readFileSync(readmePath, 'utf8')
-const next = readme.replace(
-  /(<img alt=")[^"]*(" src="assets\/stats-light\.svg")/,
-  `$1${label}$2`,
-)
-if (next === readme) throw new Error('README.md is missing the stats image alt this script updates')
+const ALT = /(<img alt=")[^"]*(" src="assets\/stats-light\.svg")/
+const next = readme.replace(ALT, `$1${label}$2`)
+if (!ALT.test(readme)) throw new Error('README.md is missing the stats image alt this script updates')
 writeFileSync(readmePath, next)
 console.log(`${USER}: ${label}`)

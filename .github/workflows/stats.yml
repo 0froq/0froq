@@ -1,6 +1,6 @@
 # Regenerates the profile SVGs (stack + contribution count) and commits them to main.
 #   Action:  Actions tab > "profile" > Run workflow (also runs every 6 hours and on pushes to scripts/).
-#   Locally: node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
+#   Locally: npm ci && node scripts/profile.mjs && GITHUB_TOKEN=$(gh auth token) node scripts/stats.mjs
 # Order matters: profile.mjs rewrites README.md, stats.mjs runs last and writes the live count.
 # Optional STATS_TOKEN secret (PAT, read:user) also counts private contributions.
 name: profile
@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ['scripts/**', '.github/workflows/stats.yml']
+    paths: ['scripts/**', 'package*.json', '.github/workflows/stats.yml']
 
 permissions:
   contents: write
@@ -28,6 +28,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          cache: npm
+      - run: npm ci
       - run: node scripts/profile.mjs
       - run: node scripts/stats.mjs
         env:
