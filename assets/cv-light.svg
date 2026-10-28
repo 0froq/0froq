@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="640" height="32" viewBox="0 0 640 32" overflow="visible">
-<g transform="translate(0 6) scale(0.82)" fill="none" stroke="#1d1d1a" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M4.34 4.97 C5.12 5.07, 7.49 5.46, 9.07 5.54 C10.65 5.61, 12.98 4.52, 13.80 5.43 C14.62 6.34, 13.96 9.28, 13.99 11.01 C14.01 12.75, 14.72 15.01, 13.94 15.84 C13.16 16.67, 11.04 15.96, 9.33 15.99 C7.62 16.01, 4.64 16.91, 3.70 15.99 C2.76 15.06, 3.60 12.17, 3.69 10.43 C3.78 8.70, 4.13 6.50, 4.24 5.59 C4.35 4.68, 4.32 5.08, 4.34 4.97"/>
-    <path d="M6.73 5.27 C6.73 4.82, 5.93 3.00, 6.70 2.55 C7.47 2.10, 10.62 2.10, 11.37 2.56 C12.11 3.03, 11.18 4.87, 11.15 5.33 M7.54 3.88 L10.42 3.68"/>
-    <path d="M6.11 8.22 L11.73 8.06 M6.44 10.66 L11.71 10.48 M6.26 12.72 L10.06 13.06"/>
-  </g><text xml:space="preserve" x="20" y="20" font-family="Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif" font-size="16" fill="#1d1d1a"><tspan style="text-decoration: underline dashed #a83429; text-underline-offset: 3px; text-decoration-thickness: 1px;">My CV</tspan> is here.</text>
-</svg>

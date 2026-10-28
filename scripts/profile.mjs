@@ -1,18 +1,9 @@
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { spawnSync } from 'node:child_process'
-import {
-  inkClipboardBoardPath,
-  inkClipboardClipPath,
-  inkClipboardLinesPath,
-  inkRulePath,
-} from './inkDraw.mjs'
 
 const W = 640
-const SIZE = 16
 const SERIF = `Georgia, 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Liberation Serif', 'Noto Serif', 'Times New Roman', serif`
 const MONO = `ui-monospace, 'SFMono-Regular', 'DejaVu Sans Mono', Menlo, Consolas, monospace`
-const PARA = 36
-const WRAP = 24
 
 const THEMES = {
   light: {
@@ -97,14 +88,6 @@ function mix(a, b, t) {
   return `#${out.map((n) => n.toString(16).padStart(2, '0')).join('')}`
 }
 
-function gloss(color) {
-  return `text-decoration: underline solid ${color}; text-underline-offset: 2px; text-decoration-thickness: 1px;`
-}
-
-function dashed(color) {
-  return `text-decoration: underline dashed ${color}; text-underline-offset: 3px; text-decoration-thickness: 1px;`
-}
-
 function measure(items) {
   const html = `<!doctype html><meta charset="utf-8"><svg xmlns="http://www.w3.org/2000/svg"><text id="t"></text></svg><pre id="out"></pre><script>
 const items = ${JSON.stringify(items)};
@@ -137,60 +120,6 @@ function svg(w, h, body) {
 ${body}
 </svg>
 `
-}
-
-function bio(theme, aestheticsLines) {
-  const lines = [
-    null,
-    ["I'm doing a master's degree, which is not the point at all."],
-    ['I code, build, read, write, and plenty of other stuff.'],
-    aestheticsLines,
-    [
-      'My dream job is to work on the intersection of design and development.',
-      'If possible, I want to be a full-time open source contributor.',
-    ],
-  ]
-  let y = 18
-  const parts = []
-  const hola = `<text xml:space="preserve" x="0" y="${y}" font-family="${SERIF}" font-size="${SIZE}" fill="${theme.ink}">Hola! I'm <tspan style="${gloss(theme.accent)}">froQ</tspan>.<tspan dx="8" font-family="DejaVu Sans, 'Segoe UI Symbol', 'Noto Sans Symbols 2', sans-serif" font-size="12" fill="${theme.muted}">→</tspan><tspan font-size="11" font-style="italic" fill="${theme.muted}"> frog (maybe)</tspan></text>`
-  parts.push(hola)
-  y += PARA
-  for (let i = 1; i < lines.length; i++) {
-    const block = lines[i]
-    block.forEach((line, li) => {
-      parts.push(
-        `<text xml:space="preserve" x="0" y="${y}" font-family="${SERIF}" font-size="${SIZE}" fill="${theme.ink}">${esc(line)}</text>`,
-      )
-      y += li === block.length - 1 ? PARA : WRAP
-    })
-  }
-  const h = y - PARA + 8
-  return { svg: svg(W, h, parts.join('\n')), h }
-}
-
-function linkLine(theme, inner, y, h, extra = '') {
-  return svg(W, h, `<text xml:space="preserve" x="0" y="${y}" font-family="${SERIF}" font-size="${SIZE}" fill="${theme.ink}">${inner}</text>${extra}`)
-}
-
-function cv(theme) {
-  const y = 20
-  const icon = `<g transform="translate(0 ${y - 14}) scale(0.82)" fill="none" stroke="${theme.ink}" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round">
-    <path d="${inkClipboardBoardPath('profile-cv')}"/>
-    <path d="${inkClipboardClipPath('profile-cv')}"/>
-    <path d="${inkClipboardLinesPath('profile-cv')}"/>
-  </g>`
-  const text = `<text xml:space="preserve" x="20" y="${y}" font-family="${SERIF}" font-size="${SIZE}" fill="${theme.ink}"><tspan style="${dashed(theme.accent)}">My CV</tspan> is here.</text>`
-  return svg(W, 32, icon + text)
-}
-
-function sponsor(theme) {
-  const text = `<tspan>Sponsor me on </tspan><tspan style="${dashed(theme.accent)}">爱发电</tspan><tspan>.</tspan>`
-  return linkLine(theme, text, 18, 28)
-}
-
-function rule(theme) {
-  const d = inkRulePath('profile-hr', 120, 4)
-  return svg(W, 20, `<g transform="translate(${(W - 120) / 2} 6)"><path d="${d}" fill="none" stroke="${theme.muted}" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></g>`)
 }
 
 function wrapTools(tools, widths) {
@@ -271,43 +200,15 @@ function stack(theme, widths) {
   return { svg: svg(W, h, parts.join('\n')), h }
 }
 
-function notes(theme) {
-  const text = `<tspan fill="${theme.muted}">Longer notes on the </tspan><tspan fill="${theme.accent}" style="${dashed(theme.accent)}">stack</tspan><tspan fill="${theme.muted}">.</tspan>`
-  return svg(
-    W,
-    28,
-    `<text xml:space="preserve" x="0" y="16" font-family="${SERIF}" font-size="14" fill="${theme.muted}">${text}</text>`,
-  )
-}
-
-const items = [
-  { id: 'aes', text: 'Most of the time I have a thing for aesthetics—and how things feel to use.', size: SIZE },
-  { id: 'dream', text: 'My dream job is to work on the intersection of design and development.', size: SIZE },
-  { id: 'Stack', text: 'Stack', size: 15 },
-]
+const items = [{ id: 'Stack', text: 'Stack', size: 15 }]
 for (const group of groups) {
   for (const [name] of group.tools) items.push({ id: name, text: name, size: 15 })
 }
 const widths = measure(items)
-for (const [id, w] of Object.entries(widths)) {
-  if (id === 'aes' || id === 'dream') {
-    if (w * 1.15 > W - 8) throw new Error(`${id} is ${w}px, too wide for the column`)
-  }
-}
-
-const aes =
-  widths.aes * 1.12 > W - 16
-    ? ['Most of the time I have a thing for aesthetics—', 'and how things feel to use.']
-    : ['Most of the time I have a thing for aesthetics—and how things feel to use.']
 
 mkdirSync('assets', { recursive: true })
 for (const [name, theme] of Object.entries(THEMES)) {
-  writeFileSync(`assets/bio-${name}.svg`, bio(theme, aes).svg)
-  writeFileSync(`assets/cv-${name}.svg`, cv(theme))
-  writeFileSync(`assets/sponsor-${name}.svg`, sponsor(theme))
-  writeFileSync(`assets/rule-${name}.svg`, rule(theme))
   writeFileSync(`assets/stack-${name}.svg`, stack(theme, widths).svg)
-  writeFileSync(`assets/notes-${name}.svg`, notes(theme))
 }
 
 function picture(base, alt) {
@@ -317,46 +218,29 @@ function picture(base, alt) {
 </picture>`
 }
 
-const bioAlt = [
-  "Hola! I'm froQ. frog (maybe).",
-  "I'm doing a master's degree, which is not the point at all.",
-  'I code, build, read, write, and plenty of other stuff.',
-  'Most of the time I have a thing for aesthetics—and how things feel to use.',
-  'My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor.',
-].join(' ')
-
 const stackAlt = groups.map((g) => `${g.level}: ${g.tools.map(([n]) => n).join(', ')}`).join('. ')
 
-const readme = [
-  '<div>',
-  picture('bio', bioAlt),
-  '</div>',
-  '<div>',
-  '<a href="https://froq.me/cv">',
-  picture('cv', 'My CV is here.'),
-  '</a>',
-  '</div>',
-  '<div>',
-  '<a href="https://afdian.com/a/froq-sponsor-me">',
-  picture('sponsor', 'Sponsor me on 爱发电.'),
-  '</a>',
-  '</div>',
-  '<div>',
-  picture('rule', ''),
-  '</div>',
-  '<div>',
-  picture('stack', `Stack. ${stackAlt}`),
-  '</div>',
-  '<div>',
-  '<a href="https://froq.me/stack">',
-  picture('notes', 'Longer notes on the stack.'),
-  '</a>',
-  '</div>',
-  '<div>',
-  picture('stats', 'contributions in the past year'),
-  '</div>',
-  '',
-].join('\n')
+const readme = `Hola! I'm froQ. → *frog (maybe)*
+
+I'm doing a master's degree, which is not the point at all.
+
+I code, build, read, write, and plenty of other stuff.
+
+Most of the time I have a thing for aesthetics—and how things feel to use.
+
+My dream job is to work on the intersection of design and development.
+If possible, I want to be a full-time open source contributor.
+
+[My CV](https://froq.me/cv) is here.
+
+Sponsor me on [爱发电](https://afdian.com/a/froq-sponsor-me).
+
+${picture('stack', `Stack. ${stackAlt}`)}
+
+Longer notes on the [stack](https://froq.me/stack).
+
+${picture('stats', 'contributions in the past year')}
+`
 
 writeFileSync('README.md', readme)
-console.log('aes', widths.aes.toFixed(1), 'dream', widths.dream.toFixed(1), 'lines', aes.length)
+console.log('stack rows', groups.length)
