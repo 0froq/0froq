@@ -1,6 +1,9 @@
-Hola! I'm froQ. → *frog (maybe)*
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/intro-dark.svg">
+  <img alt="Hola! I'm froQ. frog (maybe). froQ /frɒk/ · Zhengye Qing." src="assets/intro-light.svg" width="640">
+</picture>
 
-[froq.me](https://froq.me) · [cv](https://froq.me/cv) · [stack](https://froq.me/stack) · [爱发电](https://afdian.com/a/froq-sponsor-me)
+[me](https://froq.me) · [CV](https://froq.me/cv) · [stack](https://froq.me/stack) · [爱发电](https://afdian.com/a/froq-sponsor-me)
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/bio-dark.svg">
@@ -9,15 +12,26 @@ Hola! I'm froQ. → *frog (maybe)*
 
 ### Stack
 
-**Fluent** — Markdown · Keyboard Layouts · *3×3 Cube Speed-solving*
-
-**Daily** — Vue.js · TypeScript · CSS/UnoCSS · Git · Neovim · AI Agents · *Scraps* · *Deep Work*
-
-**Used** — Python · Personal Knowledge Management · *Writing* · *Minecraft* · *Pour Over*
-
-**Learning** — Nuxt · *Visual Design* · *Espresso* · *Podcasting*
-
-**Curious** — iOS Development · *Game Design* · *Creative Coding*
+<p>
+<code>Fluent</code><br>
+Markdown · Keyboard Layouts · <em>3×3 Cube Speed-solving</em>
+</p>
+<p>
+<code>Daily</code><br>
+Vue.js · TypeScript · CSS/UnoCSS · Git · Neovim · AI Agents · <em>Scraps</em> · <em>Deep Work</em>
+</p>
+<p>
+<code>Used</code><br>
+Python · Personal Knowledge Management · <em>Writing</em> · <em>Minecraft</em> · <em>Pour Over</em>
+</p>
+<p>
+<code>Learning</code><br>
+Nuxt · <em>Visual Design</em> · <em>Espresso</em> · <em>Podcasting</em>
+</p>
+<p>
+<code>Curious</code><br>
+iOS Development · <em>Game Design</em> · <em>Creative Coding</em>
+</p>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.froq.me/now-dark.svg">
