@@ -26,5 +26,5 @@ Hola! I'm froQ. → *frog (maybe)*
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stats-dark.svg">
-  <img alt="1,664 contributions in the past year" src="assets/stats-light.svg" width="360">
+  <img alt="1,672 contributions in the past year" src="assets/stats-light.svg" width="360">
 </picture>
