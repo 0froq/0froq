@@ -14,7 +14,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
-  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding. 1,672 contributions in the past year. 42 stars across public repos. 55 public repositories" src="assets/stack-light.svg" width="660">
+  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding. 1,680 contributions in the past year. 42 stars across public repos. 55 public repositories" src="assets/stack-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
