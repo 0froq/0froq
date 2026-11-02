@@ -8,43 +8,49 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/bio-dark.svg">
-  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor." src="assets/bio-light.svg" width="660">
+  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Currently contributing to void core." src="assets/bio-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg">
-  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding. 1,704 contributions in the past year. 42 stars across public repos. 55 public repositories" src="assets/stack-light.svg" width="660">
+  <img alt="Stack. Fluent: Markdown, Keyboard Layouts, 3×3 Cube Speed-solving. Daily: Vue.js, TypeScript, CSS/UnoCSS, Git, Neovim, AI Agents, Scraps, Deep Work. Used: Python, Personal Knowledge Management, Writing, Minecraft, Pour Over. Learning: Nuxt, Visual Design, Espresso, Podcasting. Curious: iOS Development, Game Design, Creative Coding." src="assets/stack-light.svg" width="660">
+</picture>
+</p>
+<p align="center">
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/contrib-dark.svg">
+  <img alt="Contribs. 1,708 contributions in the past year. 42 stars across public repos. 55 public repositories. 30 pull requests to other repos." src="assets/contrib-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.froq.me/now-dark.svg">
-  <img alt="what froQ is doing now" src="https://api.froq.me/now-light.svg" width="660">
+  <img alt="what froQ is doing now" src="https://api.froq.me/now-light.svg" width="640" height="24">
 </picture>
 </p>
 <p align="center">
-<a href="https://froq.me"><picture>
+<a href="https://froq.me" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-me-dark.svg">
-  <img alt="me" src="assets/nav-me-light.svg" width="21">
+  <img alt="me" src="assets/nav-me-light.svg" width="21" height="26">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="11">
-</picture><a href="https://froq.me/cv"><picture>
+  <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
+</picture><a href="https://froq.me/cv" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-cv-dark.svg">
-  <img alt="CV" src="assets/nav-cv-light.svg" width="25">
+  <img alt="CV" src="assets/nav-cv-light.svg" width="25" height="26">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="11">
-</picture><a href="https://froq.me/stack"><picture>
+  <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
+</picture><a href="https://froq.me/stack" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-stack-dark.svg">
-  <img alt="stack" src="assets/nav-stack-light.svg" width="34">
+  <img alt="stack" src="assets/nav-stack-light.svg" width="34" height="26">
 </picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
-  <img alt="·" src="assets/nav-dot-light.svg" width="11">
-</picture><a href="https://afdian.com/a/froq-sponsor-me"><picture>
+  <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
+</picture><a href="https://afdian.com/a/froq-sponsor-me" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-afdian-dark.svg">
-  <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52">
+  <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52" height="26">
 </picture></a>
 </p>
 </div>

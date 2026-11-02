@@ -1,5 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="660" height="176" viewBox="0 0 660 176" overflow="hidden" role="img" aria-label="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor.">
-  <title>I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor.</title>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="660" height="204" viewBox="0 0 660 204" overflow="hidden" role="img" aria-label="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Currently contributing to void core.">
+  <title>I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Currently contributing to void core.</title>
   <defs>
     <path id="feb_17_49" d="M0.82 0.09L0.82 0.09Q0.6 0.09 0.46 0.04Q0.32 0 0.32 -0.1L0.32 -0.1Q0.32 -0.31 0.88 -0.41L0.88 -0.41Q1.53 -0.53 1.87 -0.8Q2.21 -1.07 2.21 -1.67L2.21 -1.67L2.21 -9.35Q2.21 -9.95 1.96 -10.2Q1.72 -10.46 1.07 -10.57L1.07 -10.57Q0.51 -10.68 0.51 -10.91L0.51 -10.91Q0.51 -11.02 0.65 -11.06Q0.78 -11.1 1 -11.1L1 -11.1Q1.46 -11.1 1.76 -11.08Q2.06 -11.07 2.33 -11.06Q2.6 -11.05 2.99 -11.05L2.99 -11.05Q3.37 -11.05 3.6 -11.06Q3.84 -11.07 4.11 -11.08Q4.39 -11.1 4.85 -11.1L4.85 -11.1Q5.07 -11.1 5.2 -11.06Q5.34 -11.02 5.34 -10.91L5.34 -10.91Q5.34 -10.79 5.2 -10.71Q5.07 -10.63 4.78 -10.57L4.78 -10.57Q4.15 -10.46 3.86 -10.2Q3.57 -9.95 3.57 -9.35L3.57 -9.35L3.57 -1.67Q3.57 -1.07 3.93 -0.8Q4.28 -0.53 4.91 -0.41L4.91 -0.41Q5.2 -0.36 5.34 -0.29Q5.47 -0.22 5.47 -0.1L5.47 -0.1Q5.47 0 5.34 0.04Q5.2 0.09 4.98 0.09L4.98 0.09Q4.52 0.09 4.22 0.06Q3.93 0.03 3.66 0.02Q3.38 0 2.99 0L2.99 0Q2.57 0 2.25 0.02Q1.94 0.03 1.61 0.06Q1.28 0.09 0.82 0.09"/>
     <path id="feb_17_27" d="M1.22 -7.55L1.22 -7.55Q1.16 -7.55 1.13 -7.68Q1.1 -7.82 1.1 -7.94L1.1 -7.94Q1.12 -8.21 1.12 -8.45Q1.12 -8.69 1.12 -8.91L1.12 -8.91Q1.12 -9.21 1.1 -9.6Q1.09 -9.98 1.07 -10.26Q1.05 -10.54 1.05 -10.54L1.05 -10.54Q1.05 -10.73 1.16 -10.89Q1.28 -11.05 1.38 -11.14L1.38 -11.14Q1.58 -11.31 1.74 -11.4Q1.9 -11.49 2.11 -11.49L2.11 -11.49Q2.24 -11.49 2.3 -11.33Q2.35 -11.17 2.35 -10.95L2.35 -10.95Q2.35 -10.51 2.2 -9.93Q2.06 -9.35 1.87 -8.81Q1.68 -8.28 1.55 -7.97L1.55 -7.97Q1.48 -7.82 1.39 -7.68Q1.29 -7.55 1.22 -7.55"/>
@@ -304,5 +304,16 @@
     <use href="#feb_17_6f" xlink:href="#feb_17_6f" x="369.4" y="160"/>
     <use href="#feb_17_72" xlink:href="#feb_17_72" x="377.8" y="160"/>
     <use href="#feb_17_2e" xlink:href="#feb_17_2e" x="383.5" y="160"/>
+  </g>
+  <circle cx="8" cy="180.5" r="8" fill="#4f30e8"/>
+  <g fill="#ece7dc" fill-rule="nonzero">
+    <use href="#feb_17_76" xlink:href="#feb_17_76" x="24.0" y="186"/>
+    <use href="#feb_17_6f" xlink:href="#feb_17_6f" x="32.0" y="186"/>
+    <use href="#feb_17_69" xlink:href="#feb_17_69" x="40.5" y="186"/>
+    <use href="#feb_17_64" xlink:href="#feb_17_64" x="45.2" y="186"/>
+    <use href="#feb_17_63" xlink:href="#feb_17_63" x="58.2" y="186"/>
+    <use href="#feb_17_6f" xlink:href="#feb_17_6f" x="65.1" y="186"/>
+    <use href="#feb_17_72" xlink:href="#feb_17_72" x="73.6" y="186"/>
+    <use href="#feb_17_65" xlink:href="#feb_17_65" x="80.2" y="186"/>
   </g>
 </svg>
