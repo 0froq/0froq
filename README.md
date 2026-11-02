@@ -30,15 +30,27 @@
 </picture>
 </p>
 <p align="center">
-<a href="https://froq.me" style="text-decoration:none;color:inherit"><img alt="me" src="assets/nav-me-light.svg#gh-light-mode-only" width="21" height="26"><img alt="me" src="assets/nav-me-dark.svg#gh-dark-mode-only" width="21" height="26"></a><picture>
+<a href="https://froq.me" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-me-dark.svg">
+  <img alt="me" src="assets/nav-me-light.svg" width="21" height="26">
+</picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
   <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
-</picture><a href="https://froq.me/cv" style="text-decoration:none;color:inherit"><img alt="CV" src="assets/nav-cv-light.svg#gh-light-mode-only" width="25" height="26"><img alt="CV" src="assets/nav-cv-dark.svg#gh-dark-mode-only" width="25" height="26"></a><picture>
+</picture><a href="https://froq.me/cv" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-cv-dark.svg">
+  <img alt="CV" src="assets/nav-cv-light.svg" width="25" height="26">
+</picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
   <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
-</picture><a href="https://froq.me/stack" style="text-decoration:none;color:inherit"><img alt="stack" src="assets/nav-stack-light.svg#gh-light-mode-only" width="34" height="26"><img alt="stack" src="assets/nav-stack-dark.svg#gh-dark-mode-only" width="34" height="26"></a><picture>
+</picture><a href="https://froq.me/stack" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-stack-dark.svg">
+  <img alt="stack" src="assets/nav-stack-light.svg" width="34" height="26">
+</picture></a><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
   <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
-</picture><a href="https://afdian.com/a/froq-sponsor-me" style="text-decoration:none;color:inherit"><img alt="爱发电" src="assets/nav-afdian-light.svg#gh-light-mode-only" width="52" height="26"><img alt="爱发电" src="assets/nav-afdian-dark.svg#gh-dark-mode-only" width="52" height="26"></a>
+</picture><a href="https://afdian.com/a/froq-sponsor-me" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-afdian-dark.svg">
+  <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52" height="26">
+</picture></a>
 </p>
 </div>
