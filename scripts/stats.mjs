@@ -14,6 +14,7 @@ const LIVE_ROWS = [
   { id: 'contrib', restText: ' contributions in the past year' },
   { id: 'stars', restText: ' stars across public repos' },
   { id: 'repos', restText: ' public repositories' },
+  { id: 'prs', restText: ' pull requests to other repos' },
 ]
 
 export function glyphId(prefix, size, ch) {
@@ -65,16 +66,21 @@ export function patchRow(svg, metrics, row, total, theme) {
     )
     .replace(phraseRe(row.restText), label)
   if (!next.includes(`id="${row.id}-num"`) || !next.includes(`id="${row.id}-rest"`)) {
-    throw new Error(`failed to patch ${row.id} groups in stack SVG`)
+    throw new Error(`failed to patch ${row.id} groups in contrib SVG`)
   }
   return next
 }
 
-export function patchStack(svg, stats, theme) {
+export function patchContrib(svg, stats, theme) {
   const found = svg.match(/<!--metrics ({.*})-->/)
-  if (!found) throw new Error('stack SVG is missing metrics')
-  const metrics = JSON.parse(found[1])
-  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos }
+  if (!found) throw new Error('contrib SVG is missing metrics')
+  let metrics
+  try {
+    metrics = JSON.parse(found[1])
+  } catch (err) {
+    throw new Error(`contrib SVG has invalid metrics JSON: ${err.message}`)
+  }
+  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos, prs: stats.prs }
   let next = svg
   for (const row of metrics.rows) {
     const total = values[row.id]
@@ -85,10 +91,10 @@ export function patchStack(svg, stats, theme) {
 }
 
 export function patchReadme(readme, stats) {
-  if (!/src="assets\/stack-light\.svg"/.test(readme)) {
-    throw new Error('README.md is missing the stack image this script updates')
+  if (!/src="assets\/contrib-light\.svg"/.test(readme)) {
+    throw new Error('README.md is missing the contrib image this script updates')
   }
-  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos }
+  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos, prs: stats.prs }
   let next = readme
   for (const row of LIVE_ROWS) {
     const total = values[row.id]
@@ -115,6 +121,19 @@ async function gql(query, variables) {
   const json = await res.json()
   if (!res.ok || json.errors) throw new Error(JSON.stringify(json.errors || json))
   return json.data
+}
+
+async function rest(path) {
+  const res = await fetch(`https://api.github.com${path}`, {
+    headers: {
+      Authorization: `bearer ${TOKEN}`,
+      'User-Agent': 'profile-stats',
+      Accept: 'application/vnd.github+json',
+    },
+  })
+  const json = await res.json()
+  if (!res.ok) throw new Error(JSON.stringify(json))
+  return json
 }
 
 export async function fetchStats() {
@@ -145,19 +164,25 @@ export async function fetchStats() {
     hasNext = user.repositories.pageInfo.hasNextPage
     cursor = user.repositories.pageInfo.endCursor
   }
-  return { contrib, stars, repos }
+  const prs = await fetchExternalPrs()
+  return { contrib, stars, repos, prs }
+}
+
+async function fetchExternalPrs() {
+  const json = await rest(`/search/issues?q=${encodeURIComponent(`type:pr author:${USER} -user:${USER}`)}&per_page=1`)
+  return json.total_count ?? 0
 }
 
 async function run() {
   const stats = await fetchStats()
   for (const [name, theme] of Object.entries(THEMES)) {
-    const path = `assets/stack-${name}.svg`
-    writeFileSync(path, patchStack(readFileSync(path, 'utf8'), stats, theme))
+    const path = `assets/contrib-${name}.svg`
+    writeFileSync(path, patchContrib(readFileSync(path, 'utf8'), stats, theme))
   }
   const readmePath = 'README.md'
   writeFileSync(readmePath, patchReadme(readFileSync(readmePath, 'utf8'), stats))
   console.log(
-    `${USER}: ${stats.contrib.toLocaleString('en-US')} contributions, ${stats.stars.toLocaleString('en-US')} stars, ${stats.repos.toLocaleString('en-US')} public repos`,
+    `${USER}: ${stats.contrib.toLocaleString('en-US')} contributions, ${stats.stars.toLocaleString('en-US')} stars, ${stats.repos.toLocaleString('en-US')} public repos, ${stats.prs.toLocaleString('en-US')} external PRs`,
   )
 }
 
