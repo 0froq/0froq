@@ -20,7 +20,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="https://api.froq.me/now-dark.svg">
-  <img alt="what froQ is doing now" src="https://api.froq.me/now-light.svg" width="660">
+  <img alt="what froQ is doing now" src="https://api.froq.me/now-light.svg" width="640" height="24">
 </picture>
 </p>
 <p align="center">
