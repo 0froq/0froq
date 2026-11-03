@@ -8,7 +8,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/bio-dark.svg">
-  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Currently contributing to void core and x18n-dev." src="assets/bio-light.svg" width="660">
+  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Core member of void and x18n." src="assets/bio-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
