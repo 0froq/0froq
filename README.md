@@ -20,7 +20,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/contrib-dark.svg">
-  <img alt="Contribs. 1,710 contributions in the past year. 42 stars across public repos. 55 public repositories. 30 pull requests to other repos." src="assets/contrib-light.svg" width="660">
+  <img alt="Contribs. 1,713 contributions in the past year. 42 stars across public repos. 55 public repositories. 30 pull requests to other repos." src="assets/contrib-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
