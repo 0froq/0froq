@@ -10,12 +10,12 @@ const THEMES = {
   dark: { ink: '#ece7dc', accent: '#7ea3d9', muted: '#9c968c' },
 }
 
-// rows[0..3] = merged PRs, stars earned, contributions in N days, orgs contributed to
+// rows[0..3] = merged PRs, stars earned, contributions in N days, repos contributed to
 const LIVE_ROWS = [
   { id: 'prs', restText: 'merged PRs' },
   { id: 'stars', restText: 'stars earned' },
   { id: 'contrib', restText: 'contributions in N days' },
-  { id: 'orgs', restText: 'orgs contributed to' },
+  { id: 'repos', restText: 'repos contributed to' },
 ]
 
 export function glyphId(prefix, size, ch) {
@@ -143,7 +143,7 @@ export function patchContrib(svg, stats, theme) {
     prs: stats.mergedPrs,
     stars: stats.stars,
     contrib: stats.contrib,
-    orgs: stats.orgs,
+    repos: stats.repos,
   }
   let next = svg
   for (const row of metrics.rows) {
@@ -162,13 +162,13 @@ export function patchReadme(readme, stats) {
     prs: stats.mergedPrs,
     stars: stats.stars,
     contrib: stats.contrib,
-    orgs: stats.orgs,
+    repos: stats.repos,
   }
   const liveRows = [
     { id: 'prs', restText: 'merged PRs' },
     { id: 'stars', restText: 'stars earned' },
     { id: 'contrib', restText: 'contributions in N days', num2: true },
-    { id: 'orgs', restText: 'orgs contributed to' },
+    { id: 'repos', restText: 'repos contributed to' },
   ]
   let next = readme
   for (const row of liveRows) {
@@ -250,8 +250,8 @@ export async function fetchStats() {
     hasNext = user.repositories.pageInfo.hasNextPage
     cursor = user.repositories.pageInfo.endCursor
   }
-  const { mergedPrs, orgs } = await fetchExternalPrs()
-  return { mergedPrs, stars, contrib, activeDays, orgs }
+  const { mergedPrs, repos } = await fetchExternalPrs()
+  return { mergedPrs, stars, contrib, activeDays, repos }
 }
 
 async function fetchExternalPrs() {
@@ -259,12 +259,12 @@ async function fetchExternalPrs() {
   const json = await rest(
     `/search/issues?q=${encodeURIComponent(`type:pr author:${USER} is:merged -user:${USER}`)}&per_page=100`,
   )
-  const owners = new Set()
+  const repos = new Set()
   for (const item of json.items || []) {
     // repository_url: https://api.github.com/repos/<owner>/<repo>
-    owners.add(item.repository_url.split('/').slice(-2)[0])
+    repos.add(item.repository_url.split('/').slice(-2).join('/'))
   }
-  return { mergedPrs: json.total_count ?? 0, orgs: owners.size }
+  return { mergedPrs: json.total_count ?? 0, repos: repos.size }
 }
 
 async function run() {
@@ -276,7 +276,7 @@ async function run() {
   const readmePath = 'README.md'
   writeFileSync(readmePath, patchReadme(readFileSync(readmePath, 'utf8'), stats))
   console.log(
-    `${USER}: ${stats.mergedPrs.toLocaleString('en-US')} merged PRs, ${stats.stars.toLocaleString('en-US')} stars, ${stats.contrib.toLocaleString('en-US')} contributions in ${stats.activeDays.toLocaleString('en-US')} days, ${stats.orgs.toLocaleString('en-US')} orgs`,
+    `${USER}: ${stats.mergedPrs.toLocaleString('en-US')} merged PRs, ${stats.stars.toLocaleString('en-US')} stars, ${stats.contrib.toLocaleString('en-US')} contributions in ${stats.activeDays.toLocaleString('en-US')} days, ${stats.repos.toLocaleString('en-US')} repos contributed to`,
   )
 }
 
