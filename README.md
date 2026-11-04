@@ -8,7 +8,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/bio-dark.svg">
-  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Currently contributing to void core." src="assets/bio-light.svg" width="660">
+  <img alt="I'm doing a master's degree, which is not the point at all. I code, build, read, write, and plenty of other stuff. Most of the time I have a thing for aesthetics—and how things feel to use. My dream job is to work on the intersection of design and development. If possible, I want to be a full-time open source contributor. Core member of void and x18n." src="assets/bio-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
@@ -20,7 +20,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/contrib-dark.svg">
-  <img alt="Contribs. 1,723 contributions in the past year. 42 stars across public repos. 55 public repositories. 30 pull requests to other repos." src="assets/contrib-light.svg" width="660">
+  <img alt="Contribs. 26 merged PRs. 42 stars earned. 1,723 contributions in 184 days. 7 orgs contributed to." src="assets/contrib-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
@@ -51,6 +51,12 @@
 </picture><a href="https://afdian.com/a/froq-sponsor-me" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-afdian-dark.svg">
   <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52" height="26">
+</picture></a><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
+  <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
+</picture><a href="https://gallery.froq.me" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-galleries-dark.svg">
+  <img alt="galleries" src="assets/nav-galleries-light.svg" width="53" height="26">
 </picture></a>
 </p>
 </div>
