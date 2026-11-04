@@ -63,6 +63,33 @@ function numRecs(metrics, str) {
 
 const recWidth = (chars) => chars.reduce((s, r) => s + r.adv, 0)
 
+
+function replaceGroup(svg, id, innerXml) {
+  const open = `<g id="${id}"`
+  const start = svg.indexOf(open)
+  if (start < 0) throw new Error(`missing group ${id}`)
+  const afterOpen = svg.indexOf('>', start)
+  if (afterOpen < 0) throw new Error(`unclosed open tag ${id}`)
+  let i = afterOpen + 1
+  let depth = 1
+  while (i < svg.length && depth > 0) {
+    const nextOpen = svg.indexOf('<g', i)
+    const nextClose = svg.indexOf('</g>', i)
+    if (nextClose < 0) throw new Error(`unclosed group ${id}`)
+    if (nextOpen >= 0 && nextOpen < nextClose) {
+      depth += 1
+      i = nextOpen + 2
+    } else {
+      depth -= 1
+      if (depth === 0) {
+        return svg.slice(0, start) + innerXml + svg.slice(nextClose + 4)
+      }
+      i = nextClose + 4
+    }
+  }
+  throw new Error(`failed to close group ${id}`)
+}
+
 export function patchRow(svg, metrics, row, value, days, theme) {
   const num = value.toLocaleString('en-US')
   const numChars = numRecs(metrics, num)
@@ -85,16 +112,11 @@ export function patchRow(svg, metrics, row, value, days, theme) {
   const label = row.num2
     ? `${num} ${row.restText.replace('N', days.toLocaleString('en-US'))}`
     : `${num} ${row.restText}`
-  const next = svg
-    .replace(
-      new RegExp(`<g id="${row.id}-num"[^>]*>[\\s\\S]*?<\\/g>`),
-      `<g id="${row.id}-num" fill="${theme.accent}" fill-rule="nonzero">\n${numUses}\n  </g>`,
-    )
-    .replace(
-      new RegExp(`<g id="${row.id}-rest"[^>]*>[\\s\\S]*?<\\/g>`),
-      `<g id="${row.id}-rest" fill="${theme.muted}" fill-rule="nonzero">\n${restParts.join('\n')}\n  </g>`,
-    )
-    .replace(rowLabel(row, row).text ? phraseReFor(row) : /$^/, label)
+  const numGroup = `<g id="${row.id}-num" fill="${theme.accent}" fill-rule="nonzero">\n${numUses}\n  </g>`
+  const restGroup = `<g id="${row.id}-rest" fill="${theme.muted}" fill-rule="nonzero">\n${restParts.join('\n')}\n  </g>`
+  let next = replaceGroup(svg, `${row.id}-num`, numGroup)
+  next = replaceGroup(next, `${row.id}-rest`, restGroup)
+  next = next.replace(rowLabel(row, row).text ? phraseReFor(row) : /$^/, label)
   if (!next.includes(`id="${row.id}-num"`) || !next.includes(`id="${row.id}-rest"`)) {
     throw new Error(`failed to patch ${row.id} groups in contrib SVG`)
   }
