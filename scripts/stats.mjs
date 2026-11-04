@@ -73,14 +73,17 @@ export function patchRow(svg, metrics, row, value, days, theme) {
   row.rest.forEach((seg, si) => {
     if (row.num2 && si === 1) {
       const dChars = numRecs(metrics, days.toLocaleString('en-US'))
-      restParts.push(layoutUses(dChars, restX, row.y))
+      const dUses = layoutUses(dChars, restX, row.y)
+      restParts.push(
+        `    <g fill="${theme.accent}" fill-rule="nonzero">\n${dUses}\n    </g>`,
+      )
       restX += recWidth(dChars)
     }
     restParts.push(layoutUses(seg, restX, row.y))
     restX += recWidth(seg)
   })
   const label = row.num2
-    ? `${num}${row.restText.replace('N', days.toLocaleString('en-US'))}`
+    ? `${num} ${row.restText.replace('N', days.toLocaleString('en-US'))}`
     : `${num} ${row.restText}`
   const next = svg
     .replace(
