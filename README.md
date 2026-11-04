@@ -20,7 +20,7 @@
 <p align="center">
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/contrib-dark.svg">
-  <img alt="Contribs. 26 merged PRs. 42 stars earned. 1,725 contributions in 186 days. 9 repos contributed to." src="assets/contrib-light.svg" width="660">
+  <img alt="Contribs. 27 merged PRs. 42 stars earned. 1,736 contributions in 186 days. 9 repos contributed to." src="assets/contrib-light.svg" width="660">
 </picture>
 </p>
 <p align="center">
