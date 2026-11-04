@@ -10,11 +10,12 @@ const THEMES = {
   dark: { ink: '#ece7dc', accent: '#7ea3d9', muted: '#9c968c' },
 }
 
+// rows[0..3] = merged PRs, stars earned, contributions in N days, orgs contributed to
 const LIVE_ROWS = [
-  { id: 'contrib', restText: ' contributions in the past year' },
-  { id: 'stars', restText: ' stars across public repos' },
-  { id: 'repos', restText: ' public repositories' },
-  { id: 'prs', restText: ' pull requests to other repos' },
+  { id: 'prs', restText: 'merged PRs' },
+  { id: 'stars', restText: 'stars earned' },
+  { id: 'contrib', restText: 'contributions in N days' },
+  { id: 'orgs', restText: 'orgs contributed to' },
 ]
 
 export function glyphId(prefix, size, ch) {
@@ -39,22 +40,48 @@ function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
-function phraseRe(restText) {
-  return new RegExp(`\\d{1,3}(?:,\\d{3})*${escapeRegExp(restText)}`, 'g')
+const NUM = '\\d{1,3}(?:,\\d{3})*'
+
+function rowLabel(row, metricsRow) {
+  // restText contains optional N placeholder for a second live number (activeDays)
+  const text = metricsRow.restText.replace('N', NUM)
+  return { text }
 }
 
-export function patchRow(svg, metrics, row, total, theme) {
-  const num = total.toLocaleString('en-US')
-  const numChars = [...num].map((ch) => {
+function numRecs(metrics, str) {
+  return [...str].map((ch) => {
+    if (ch === ',') {
+      const adv = metrics.adv[',']
+      if (adv == null) throw new Error('no advance for comma')
+      return { id: glyphId(metrics.prefix, metrics.size, ','), adv }
+    }
     const adv = metrics.adv[ch]
     if (adv == null) throw new Error(`no advance for ${JSON.stringify(ch)}`)
     return { id: glyphId(metrics.prefix, metrics.size, ch), adv }
   })
-  let x = row.x
-  const numUses = layoutUses(numChars, x, row.y)
-  x += numChars.reduce((sum, rec) => sum + rec.adv, 0)
-  const restUses = layoutUses(row.rest, x, row.y)
-  const label = `${num}${row.restText}`
+}
+
+const recWidth = (chars) => chars.reduce((s, r) => s + r.adv, 0)
+
+export function patchRow(svg, metrics, row, value, days, theme) {
+  const num = value.toLocaleString('en-US')
+  const numChars = numRecs(metrics, num)
+  const numX = metrics.midline - recWidth(numChars)
+  const numUses = layoutUses(numChars, numX, row.y)
+  let restX = metrics.midline + metrics.gap
+  const restParts = []
+  row.rest.forEach((seg, si) => {
+    if (row.num2 && si === 1) {
+      const dChars = numRecs(metrics, days.toLocaleString('en-US'))
+      restParts.push(layoutUses(dChars, restX, row.y))
+      restX += recWidth(dChars)
+    }
+    restParts.push(layoutUses(seg, restX, row.y))
+    restX += recWidth(seg)
+  })
+  const label = row.num2
+    ? `${num}${row.restText.replace('N', days.toLocaleString('en-US'))}`
+    : `${num} ${row.restText}`
   const next = svg
     .replace(
       new RegExp(`<g id="${row.id}-num"[^>]*>[\\s\\S]*?<\\/g>`),
@@ -62,13 +89,20 @@ export function patchRow(svg, metrics, row, total, theme) {
     )
     .replace(
       new RegExp(`<g id="${row.id}-rest"[^>]*>[\\s\\S]*?<\\/g>`),
-      `<g id="${row.id}-rest" fill="${theme.muted}" fill-rule="nonzero">\n${restUses}\n  </g>`,
+      `<g id="${row.id}-rest" fill="${theme.muted}" fill-rule="nonzero">\n${restParts.join('\n')}\n  </g>`,
     )
-    .replace(phraseRe(row.restText), label)
+    .replace(rowLabel(row, row).text ? phraseReFor(row) : /$^/, label)
   if (!next.includes(`id="${row.id}-num"`) || !next.includes(`id="${row.id}-rest"`)) {
     throw new Error(`failed to patch ${row.id} groups in contrib SVG`)
   }
   return next
+}
+
+function phraseReFor(row) {
+  const pattern = row.num2
+    ? `${NUM} ${escapeRegExp(row.restText).replace('N', NUM)}`
+    : `${NUM} ${escapeRegExp(row.restText)}`
+  return new RegExp(pattern, 'g')
 }
 
 export function patchContrib(svg, stats, theme) {
@@ -80,12 +114,17 @@ export function patchContrib(svg, stats, theme) {
   } catch (err) {
     throw new Error(`contrib SVG has invalid metrics JSON: ${err.message}`)
   }
-  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos, prs: stats.prs }
+  const values = {
+    prs: stats.mergedPrs,
+    stars: stats.stars,
+    contrib: stats.contrib,
+    orgs: stats.orgs,
+  }
   let next = svg
   for (const row of metrics.rows) {
     const total = values[row.id]
     if (total == null) throw new Error(`no stats value for metric ${row.id}`)
-    next = patchRow(next, metrics, row, total, theme)
+    next = patchRow(next, metrics, row, total, stats.activeDays, theme)
   }
   return next
 }
@@ -94,16 +133,33 @@ export function patchReadme(readme, stats) {
   if (!/src="assets\/contrib-light\.svg"/.test(readme)) {
     throw new Error('README.md is missing the contrib image this script updates')
   }
-  const values = { contrib: stats.contrib, stars: stats.stars, repos: stats.repos, prs: stats.prs }
+  const values = {
+    prs: stats.mergedPrs,
+    stars: stats.stars,
+    contrib: stats.contrib,
+    orgs: stats.orgs,
+  }
+  const liveRows = [
+    { id: 'prs', restText: 'merged PRs' },
+    { id: 'stars', restText: 'stars earned' },
+    { id: 'contrib', restText: 'contributions in N days', num2: true },
+    { id: 'orgs', restText: 'orgs contributed to' },
+  ]
   let next = readme
-  for (const row of LIVE_ROWS) {
+  for (const row of liveRows) {
     const total = values[row.id]
-    const re = phraseRe(row.restText)
+    const pattern = row.num2
+      ? `${NUM} ${escapeRegExp(row.restText).replace('N', NUM)}`
+      : `${NUM} ${escapeRegExp(row.restText)}`
+    const re = new RegExp(pattern, 'g')
     if (!re.test(next)) {
       throw new Error(`README.md is missing the ${row.id} phrase this script updates`)
     }
     re.lastIndex = 0
-    next = next.replace(re, `${total.toLocaleString('en-US')}${row.restText}`)
+    const label = row.num2
+      ? `${total.toLocaleString('en-US')} ${row.restText.replace('N', stats.activeDays.toLocaleString('en-US'))}`
+      : `${total.toLocaleString('en-US')} ${row.restText}`
+    next = next.replace(re, label)
   }
   return next
 }
@@ -140,7 +196,7 @@ export async function fetchStats() {
   if (!TOKEN) throw new Error('Set GITHUB_TOKEN (or STATS_TOKEN) to query the GitHub GraphQL API')
   const query = `query($u:String!,$c:String){
     user(login:$u){
-      contributionsCollection{contributionCalendar{totalContributions}}
+      contributionsCollection{contributionCalendar{totalContributions weeks{contributionDays{contributionCount}}}}
       repositories(ownerAffiliations:OWNER, privacy:PUBLIC, first:100, after:$c){
         totalCount
         pageInfo{hasNextPage endCursor}
@@ -149,7 +205,7 @@ export async function fetchStats() {
     }
   }`
   let contrib = null
-  let repos = 0
+  let activeDays = 0
   let stars = 0
   let cursor = null
   let hasNext = true
@@ -157,20 +213,33 @@ export async function fetchStats() {
     const data = await gql(query, { u: USER, c: cursor })
     const user = data.user
     if (contrib == null) {
-      contrib = user.contributionsCollection.contributionCalendar.totalContributions
+      const cal = user.contributionsCollection.contributionCalendar
+      contrib = cal.totalContributions
+      for (const week of cal.weeks) {
+        for (const day of week.contributionDays) {
+          if (day.contributionCount > 0) activeDays += 1
+        }
+      }
     }
-    repos = user.repositories.totalCount
     for (const node of user.repositories.nodes) stars += node.stargazerCount
     hasNext = user.repositories.pageInfo.hasNextPage
     cursor = user.repositories.pageInfo.endCursor
   }
-  const prs = await fetchExternalPrs()
-  return { contrib, stars, repos, prs }
+  const { mergedPrs, orgs } = await fetchExternalPrs()
+  return { mergedPrs, stars, contrib, activeDays, orgs }
 }
 
 async function fetchExternalPrs() {
-  const json = await rest(`/search/issues?q=${encodeURIComponent(`type:pr author:${USER} -user:${USER}`)}&per_page=1`)
-  return json.total_count ?? 0
+  // merged PRs authored by USER to repos not owned by USER
+  const json = await rest(
+    `/search/issues?q=${encodeURIComponent(`type:pr author:${USER} is:merged -user:${USER}`)}&per_page=100`,
+  )
+  const owners = new Set()
+  for (const item of json.items || []) {
+    // repository_url: https://api.github.com/repos/<owner>/<repo>
+    owners.add(item.repository_url.split('/').slice(-2)[0])
+  }
+  return { mergedPrs: json.total_count ?? 0, orgs: owners.size }
 }
 
 async function run() {
@@ -182,7 +251,7 @@ async function run() {
   const readmePath = 'README.md'
   writeFileSync(readmePath, patchReadme(readFileSync(readmePath, 'utf8'), stats))
   console.log(
-    `${USER}: ${stats.contrib.toLocaleString('en-US')} contributions, ${stats.stars.toLocaleString('en-US')} stars, ${stats.repos.toLocaleString('en-US')} public repos, ${stats.prs.toLocaleString('en-US')} external PRs`,
+    `${USER}: ${stats.mergedPrs.toLocaleString('en-US')} merged PRs, ${stats.stars.toLocaleString('en-US')} stars, ${stats.contrib.toLocaleString('en-US')} contributions in ${stats.activeDays.toLocaleString('en-US')} days, ${stats.orgs.toLocaleString('en-US')} orgs`,
   )
 }
 
