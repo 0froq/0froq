@@ -51,6 +51,12 @@
 </picture><a href="https://afdian.com/a/froq-sponsor-me" style="text-decoration:none;color:inherit"><picture>
   <source media="(prefers-color-scheme: dark)" srcset="assets/nav-afdian-dark.svg">
   <img alt="爱发电" src="assets/nav-afdian-light.svg" width="52" height="26">
+</picture></a><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-dot-dark.svg">
+  <img alt="·" src="assets/nav-dot-light.svg" width="11" height="26">
+</picture><a href="https://gallery.froq.me" style="text-decoration:none;color:inherit"><picture>
+  <source media="(prefers-color-scheme: dark)" srcset="assets/nav-galleries-dark.svg">
+  <img alt="galleries" src="assets/nav-galleries-light.svg" width="53" height="26">
 </picture></a>
 </p>
 </div>
